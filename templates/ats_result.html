@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        ATS Report | ResumeAI Pro
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/ats.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="result-container">
+
+
+    <div class="result-header">
+
+
+        <div>
+
+
+            <span class="badge">
+
+                ANALYSIS COMPLETE
+
+            </span>
+
+
+            <h1>
+
+                Resume ATS Report
+
+            </h1>
+
+
+            <p>
+
+                {{ filename }}
+
+                ·
+
+                {{ word_count }} words
+
+            </p>
+
+
+        </div>
+
+
+        <div class="score">
+
+
+            <span>
+
+                {{ score }}
+
+            </span>
+
+
+            <small>
+
+                / 100
+
+            </small>
+
+
+            <p>
+
+                Resume Score
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="job-score-card">
+
+
+        <p>
+
+            JOB DESCRIPTION MATCH
+
+        </p>
+
+
+        <h2>
+
+            {{ job_match_score }}%
+
+        </h2>
+
+
+        <div class="progress">
+
+
+            <div
+
+                class="progress-bar"
+
+                style="width: {{ job_match_score }}%;"
+
+            ></div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="result-grid">
+
+
+        <div class="result-card">
+
+
+            <h2>
+
+                Matched Skills
+
+            </h2>
+
+
+            {% if matched_skills %}
+
+
+                {% for skill in matched_skills %}
+
+
+                <div class="success">
+
+                    ✓ {{ skill|title }}
+
+                </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div class="problem">
+
+                    No matching technical skills detected.
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        <div class="result-card">
+
+
+            <h2>
+
+                Missing Job Keywords
+
+            </h2>
+
+
+            <p class="warning-text">
+
+                Only add these skills if you genuinely
+                have the knowledge or experience.
+
+            </p>
+
+
+            {% if missing_skills %}
+
+
+                {% for skill in missing_skills %}
+
+
+                <div class="problem">
+
+                    ! {{ skill|title }}
+
+                </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div class="success">
+
+                    No major technical keywords missing.
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="result-grid">
+
+
+        <div class="result-card">
+
+
+            <h2>
+
+                Problems Found
+
+            </h2>
+
+
+            {% if problems %}
+
+
+                {% for problem in problems %}
+
+
+                <div class="problem">
+
+                    ! {{ problem }}
+
+                </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div class="success">
+
+                    No major structural problems detected.
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        <div class="result-card">
+
+
+            <h2>
+
+                Recommended Improvements
+
+            </h2>
+
+
+            {% if suggestions %}
+
+
+                {% for suggestion in suggestions %}
+
+
+                <div class="suggestion">
+
+                    ✓ {{ suggestion }}
+
+                </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div class="success">
+
+                    Resume passed all current checks.
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="actions">
+
+
+        <a href="/upload">
+
+            Analyze Another Resume
+
+        </a>
+
+
+        <a
+
+            href="/create"
+
+            class="primary"
+
+        >
+
+            Improve Resume
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

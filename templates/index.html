@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ResumeAI Pro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a
+        href="{{ url_for('home') }}"
+        class="logo"
+    >
+        ResumeAI <span>Pro</span>
+    </a>
+
+
+    <div class="menu">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+
+        <a href="{{ url_for('create_resume') }}">
+            Create Resume
+        </a>
+
+
+        <a href="{{ url_for('ats') }}">
+            ATS Checker
+        </a>
+
+
+        <a href="{{ url_for('about') }}">
+            About
+        </a>
+
+
+        {% if session.get("user_id") %}
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="login-link"
+            >
+                Logout
+            </a>
+
+        {% else %}
+
+            <a
+                href="{{ url_for('login') }}"
+                class="login-link"
+            >
+                Login
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+<main class="hero">
+
+    <div class="glass">
+
+        <div class="badge">
+            AI POWERED RESUME PLATFORM
+        </div>
+
+        <h1>
+            Build ATS-Friendly
+            <span>Resumes With AI</span>
+        </h1>
+
+        <p>
+            Create professional resumes, analyze ATS scores,
+            compare job descriptions and download clean
+            ATS-friendly PDF resumes.
+        </p>
+
+
+        <div class="buttons">
+
+            <a
+                href="{{ url_for('create_resume') }}"
+                class="primary"
+            >
+                Create Resume
+            </a>
+
+            <a
+                href="{{ url_for('upload_resume') }}"
+                class="secondary"
+            >
+                Upload Resume
+            </a>
+
+        </div>
+
+
+        <div class="features">
+
+            <div>
+                <strong>ATS</strong>
+                <span>Resume Analysis</span>
+            </div>
+
+            <div>
+                <strong>AI</strong>
+                <span>Smart Suggestions</span>
+            </div>
+
+            <div>
+                <strong>PDF</strong>
+                <span>Resume Download</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

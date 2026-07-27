@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Resume Builder | ResumeAI Pro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/builder.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="builder">
+
+    <!-- FORM PANEL -->
+
+    <div class="form-panel">
+
+        <div class="form-header">
+
+            <a href="/">← Home</a>
+
+            <h1>Build Your Resume</h1>
+
+            <p>
+                Create a professional ATS-friendly resume.
+            </p>
+
+        </div>
+
+
+        <!-- IMPORTANT FORM -->
+
+        <form
+            id="resumeForm"
+            action="{{ url_for('download_resume') }}"
+            method="POST"
+        >
+
+
+            <!-- PERSONAL INFORMATION -->
+
+            <div class="form-card">
+
+                <h2>Personal Information</h2>
+
+
+<label>Full Name</label>
+<input id="fullName" placeholder="Enter your full name">
+
+<label>Job Title</label>
+<input id="jobTitle" placeholder="Enter your job title">
+
+<label>Email</label>
+<input
+    id="email"
+    type="email"
+    placeholder="Enter your email"
+>
+
+<label>Phone</label>
+<input
+    id="phone"
+    placeholder="Enter your phone number"
+>
+
+<label>LinkedIn</label>
+<input
+    id="linkedin"
+    placeholder="Enter LinkedIn profile URL"
+>
+
+<label>GitHub</label>
+<input
+    id="github"
+    placeholder="Enter GitHub profile URL"
+>
+
+
+            <!-- EDUCATION -->
+
+            <div class="form-card">
+
+                <h2>Education</h2>
+
+
+                <label>College</label>
+
+                <input
+                    id="college"
+                    name="college"
+                    placeholder="College"
+                >
+
+
+                <label>Degree</label>
+
+                <input
+                    id="degree"
+                    name="degree"
+                    placeholder="   "
+                >  
+
+
+                <label>Branch</label>
+
+                <input
+                    id="branch"
+                    name="branch"
+                    placeholder="   "
+                >
+
+
+                <label>CGPA</label>
+
+                <input
+                    id="cgpa"
+                    name="cgpa"
+                    placeholder="   "
+                >
+
+
+                <label>Graduation Year</label>
+
+                <input
+                    id="gradYear"
+                    name="gradYear"
+                    placeholder="   "
+                >
+
+            </div>
+
+
+            <!-- SKILLS -->
+
+            <div class="form-card">
+
+                <h2>Skills</h2>
+
+                <label>
+                    Enter skills separated by commas
+                </label>
+
+                <textarea
+                    id="skills"
+                    name="skills"
+                    placeholder="Python, SQL, Flask, Machine Learning, HTML, CSS"
+                ></textarea>
+
+            </div>
+
+
+            <!-- PROJECT -->
+
+            <div class="form-card">
+
+                <h2>Projects</h2>
+
+
+                <label>Project Name</label>
+
+                <input
+                    id="projectName"
+                    name="projectName"
+                    placeholder="   "
+                >
+
+
+                <label>Technologies</label>
+
+                <input
+                    id="projectTech"
+                    name="projectTech"
+                    placeholder="Python, Flask, Machine Learning"
+                >
+
+
+                <label>Project Description</label>
+
+                <textarea
+                    id="projectDescription"
+                    name="projectDescription"
+                    placeholder="Describe your project and impact"
+                ></textarea>
+
+            </div>
+
+
+            <!-- DOWNLOAD BUTTON -->
+
+            <button
+                type="submit"
+                class="download-btn"
+            >
+                Download Resume PDF
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- LIVE PREVIEW -->
+
+    <div class="preview-panel">
+
+        <div class="preview-header">
+
+            <h2>Live Preview</h2>
+
+            <span>ATS Friendly</span>
+
+        </div>
+
+
+        <div
+            class="resume-paper"
+            id="resumePaper"
+        >
+
+            <h1 id="previewName">
+                YOUR NAME
+            </h1>
+
+
+            <h3 id="previewJob">
+                JOB TITLE
+            </h3>
+
+
+            <div class="contact">
+
+                <span id="previewEmail">
+                    email@example.com
+                </span>
+
+                <span id="previewPhone">
+                    +91 0000000000
+                </span>
+
+            </div>
+
+
+            <div class="links">
+
+                <span id="previewLinkedin">
+                    LinkedIn
+                </span>
+
+                <span id="previewGithub">
+                    GitHub
+                </span>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- SUMMARY -->
+
+            <div class="resume-section">
+
+                <h2>
+                    PROFESSIONAL SUMMARY
+                </h2>
+
+                <p id="previewSummary">
+
+                    Your professional summary
+                    will appear here.
+
+                </p>
+
+            </div>
+
+
+            <!-- EDUCATION -->
+
+            <div class="resume-section">
+
+                <h2>EDUCATION</h2>
+
+                <h3 id="previewCollege">
+                    College Name
+                </h3>
+
+                <p id="previewEducation">
+
+                    Degree • Branch • CGPA • Graduation Year
+
+                </p>
+
+            </div>
+
+
+            <!-- SKILLS -->
+
+            <div class="resume-section">
+
+                <h2>SKILLS</h2>
+
+                <p id="previewSkills">
+
+                    Your skills will appear here.
+
+                </p>
+
+            </div>
+
+
+            <!-- PROJECT -->
+
+            <div class="resume-section">
+
+                <h2>PROJECTS</h2>
+
+                <h3 id="previewProjectName">
+
+                    Project Name
+
+                </h3>
+
+                <p id="previewProjectTech"></p>
+
+                <p id="previewProjectDescription">
+
+                    Your project description
+                    will appear here.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='js/builder.js') }}"
+></script>
+
+</body>
+
+</html>

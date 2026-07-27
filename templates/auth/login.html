@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | ResumeAI Pro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/auth.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-glow glow-one"></div>
+
+    <div class="auth-glow glow-two"></div>
+
+
+    <div class="auth-card">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="logo"
+        >
+            ResumeAI <span>Pro</span>
+        </a>
+
+
+        <div class="badge">
+            WELCOME BACK
+        </div>
+
+
+        <h1>
+            Welcome back.
+        </h1>
+
+
+        <p class="subtitle">
+            Login to continue building better resumes.
+        </p>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form
+            action="{{ url_for('login') }}"
+            method="POST"
+        >
+
+
+            <div class="input-group">
+
+                <label>Email Address</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="name@email.com"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit">
+
+                Login to ResumeAI
+
+            </button>
+
+
+        </form>
+
+
+        <p class="switch-text">
+
+            Don't have an account?
+
+            <a href="{{ url_for('register') }}">
+
+                Create Account
+
+            </a>
+
+        </p>
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

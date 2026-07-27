@@ -1,0 +1,796 @@
+@import url(
+'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
+);
+
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family: 'Inter', sans-serif;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+
+        radial-gradient(
+            circle at 10% 10%,
+            #312e81,
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 90% 90%,
+            #164e63,
+            transparent 35%
+        ),
+
+        #060914;
+
+    color: white;
+
+}
+
+
+/* UPLOAD PAGE */
+
+
+.upload-container {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+
+}
+
+
+.upload-card {
+
+    width: 100%;
+
+    max-width: 700px;
+
+    padding: 50px;
+
+    background: rgba(
+        15,
+        23,
+        42,
+        0.85
+    );
+
+    border: 1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.1
+        );
+
+    border-radius: 28px;
+
+    text-align: center;
+
+    backdrop-filter: blur(20px);
+
+    box-shadow:
+
+        0 30px 80px
+
+        rgba(
+            0,
+            0,
+            0,
+            0.45
+        );
+
+}
+
+
+.badge {
+
+    display: inline-block;
+
+    padding: 8px 15px;
+
+    background:
+
+        rgba(
+            99,
+            102,
+            241,
+            0.15
+        );
+
+    color: #a5b4fc;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+}
+
+
+.upload-card h1 {
+
+    font-size: 42px;
+
+    margin-top: 22px;
+
+}
+
+
+.subtitle {
+
+    color: #94a3b8;
+
+    margin-top: 12px;
+
+    line-height: 1.7;
+
+}
+
+
+.drop-zone {
+
+    margin-top: 35px;
+
+    min-height: 230px;
+
+    border:
+
+        2px dashed
+
+        #475569;
+
+    border-radius: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 14px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+.drop-zone:hover {
+
+    border-color: #818cf8;
+
+    background:
+
+        rgba(
+            99,
+            102,
+            241,
+            0.08
+        );
+
+    transform: translateY(-3px);
+
+}
+
+
+.upload-icon {
+
+    width: 70px;
+
+    height: 70px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 50%;
+
+    background:
+
+        rgba(
+            99,
+            102,
+            241,
+            0.15
+        );
+
+    color: #818cf8;
+
+    font-size: 40px;
+
+}
+
+
+.drop-zone span {
+
+    color: #94a3b8;
+
+}
+
+
+.job-label {
+
+    display: block;
+
+    text-align: left;
+
+    margin-top: 30px;
+
+    margin-bottom: 10px;
+
+    color: #cbd5e1;
+
+    font-weight: 600;
+
+}
+
+
+.job-description {
+
+    width: 100%;
+
+    min-height: 190px;
+
+    padding: 18px;
+
+    background: #0b1220;
+
+    color: white;
+
+    border:
+
+        1px solid
+
+        #334155;
+
+    border-radius: 14px;
+
+    resize: vertical;
+
+    outline: none;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+
+.job-description:focus {
+
+    border-color: #6366f1;
+
+    box-shadow:
+
+        0 0 0 3px
+
+        rgba(
+            99,
+            102,
+            241,
+            0.15
+        );
+
+}
+
+
+button {
+
+    width: 100%;
+
+    padding: 17px;
+
+    margin-top: 25px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+button:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+
+        0 15px 35px
+
+        rgba(
+            99,
+            102,
+            241,
+            0.3
+        );
+
+}
+
+
+.home-link {
+
+    display: inline-block;
+
+    margin-top: 25px;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+}
+
+
+.error {
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    background:
+
+        rgba(
+            239,
+            68,
+            68,
+            0.15
+        );
+
+    color: #fca5a5;
+
+    border-radius: 10px;
+
+}
+
+
+/* RESULT PAGE */
+
+
+.result-container {
+
+    width: 90%;
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 60px 0;
+
+}
+
+
+.result-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.result-header h1 {
+
+    font-size: 44px;
+
+    margin-top: 20px;
+
+}
+
+
+.result-header p {
+
+    color: #94a3b8;
+
+    margin-top: 12px;
+
+}
+
+
+.score {
+
+    width: 180px;
+
+    height: 180px;
+
+    border-radius: 50%;
+
+    border:
+
+        10px solid
+
+        #6366f1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+.score span {
+
+    font-size: 50px;
+
+    font-weight: 800;
+
+}
+
+
+.score small {
+
+    color: #94a3b8;
+
+}
+
+
+.score p {
+
+    color: #94a3b8;
+
+    margin-top: 5px;
+
+}
+
+
+.job-score-card {
+
+    margin-top: 45px;
+
+    padding: 30px;
+
+    background:
+
+        rgba(
+            15,
+            23,
+            42,
+            0.85
+        );
+
+    border:
+
+        1px solid
+
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
+
+    border-radius: 20px;
+
+}
+
+
+.job-score-card p {
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+}
+
+
+.job-score-card h2 {
+
+    font-size: 45px;
+
+    margin-top: 10px;
+
+}
+
+
+.progress {
+
+    width: 100%;
+
+    height: 12px;
+
+    background: #1e293b;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-top: 20px;
+
+}
+
+
+.progress-bar {
+
+    height: 100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    border-radius: 20px;
+
+}
+
+
+.result-grid {
+
+    display: grid;
+
+    grid-template-columns:
+
+        1fr 1fr;
+
+    gap: 25px;
+
+    margin-top: 30px;
+
+}
+
+
+.result-card {
+
+    background:
+
+        rgba(
+            15,
+            23,
+            42,
+            0.85
+        );
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    border:
+
+        1px solid
+
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
+
+}
+
+
+.result-card h2 {
+
+    margin-bottom: 20px;
+
+}
+
+
+.problem,
+
+.suggestion,
+
+.success {
+
+    padding: 15px;
+
+    margin-top: 12px;
+
+    border-radius: 10px;
+
+    line-height: 1.5;
+
+}
+
+
+.problem {
+
+    background:
+
+        rgba(
+            239,
+            68,
+            68,
+            0.1
+        );
+
+    color: #fca5a5;
+
+}
+
+
+.suggestion {
+
+    background:
+
+        rgba(
+            59,
+            130,
+            246,
+            0.1
+        );
+
+    color: #93c5fd;
+
+}
+
+
+.success {
+
+    background:
+
+        rgba(
+            34,
+            197,
+            94,
+            0.1
+        );
+
+    color: #86efac;
+
+}
+
+
+.warning-text {
+
+    color: #fbbf24;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 15px;
+
+}
+
+
+.actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 15px;
+
+    margin-top: 35px;
+
+}
+
+
+.actions a {
+
+    padding: 15px 25px;
+
+    border:
+
+        1px solid
+
+        #475569;
+
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+}
+
+
+.actions .primary {
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    border: none;
+
+}
+
+
+@media (
+    max-width: 750px
+) {
+
+    .result-header {
+
+        flex-direction: column;
+
+        gap: 30px;
+
+    }
+
+
+    .result-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .upload-card {
+
+        padding: 30px 20px;
+
+    }
+
+
+    .upload-card h1 {
+
+        font-size: 32px;
+
+    }
+
+
+    .actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .actions a {
+
+        text-align: center;
+
+    }
+
+}

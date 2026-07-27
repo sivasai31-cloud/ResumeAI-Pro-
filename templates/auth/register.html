@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | ResumeAI Pro</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/auth.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-glow glow-one"></div>
+    <div class="auth-glow glow-two"></div>
+
+    <div class="auth-card">
+
+        <a href="{{ url_for('home') }}" class="logo">
+            ResumeAI <span>Pro</span>
+        </a>
+
+        <div class="badge">
+            CREATE ACCOUNT
+        </div>
+
+        <h1>Create your account</h1>
+
+        <p class="subtitle">
+            Build professional ATS-friendly resumes with AI.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="message {{category}}">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form
+            action="{{ url_for('register') }}"
+            method="POST"
+            id="registerForm"
+        >
+
+            <div class="input-group">
+
+                <label>Full Name</label>
+
+                <div class="input-box">
+                    <i class="fa-solid fa-user"></i>
+
+                    <input
+                        type="text"
+                        name="full_name"
+                        placeholder="John Doe"
+                        required
+                        autocomplete="name"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Email Address</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="john@email.com"
+                        required
+                        autocomplete="email"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Password</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Minimum 6 characters"
+                        minlength="6"
+                        required
+                        autocomplete="new-password"
+                    >
+
+                    <i
+                        class="fa-solid fa-eye toggle-password"
+                        onclick="togglePassword('password',this)"
+                    ></i>
+
+                </div>
+
+                <small id="strength"></small>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Confirm Password</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirm_password"
+                        placeholder="Confirm password"
+                        minlength="6"
+                        required
+                        autocomplete="new-password"
+                    >
+
+                    <i
+                        class="fa-solid fa-eye toggle-password"
+                        onclick="togglePassword('confirmPassword',this)"
+                    ></i>
+
+                </div>
+
+            </div>
+
+            <button
+                id="registerBtn"
+                type="submit"
+            >
+                <i class="fa-solid fa-user-plus"></i>
+                Create Account
+            </button>
+
+        </form>
+
+        <p class="switch-text">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Login
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+function togglePassword(id,icon){
+
+    const input=document.getElementById(id);
+
+    if(input.type==="password"){
+
+        input.type="text";
+
+        icon.classList.replace("fa-eye","fa-eye-slash");
+
+    }
+
+    else{
+
+        input.type="password";
+
+        icon.classList.replace("fa-eye-slash","fa-eye");
+
+    }
+
+}
+
+const password=document.getElementById("password");
+
+const strength=document.getElementById("strength");
+
+password.addEventListener("input",()=>{
+
+    const value=password.value;
+
+    if(value.length<6){
+
+        strength.innerHTML="Weak Password";
+
+        strength.style.color="#ff4d4d";
+
+    }
+
+    else if(value.length<10){
+
+        strength.innerHTML="Medium Password";
+
+        strength.style.color="#ffaa00";
+
+    }
+
+    else{
+
+        strength.innerHTML="Strong Password";
+
+        strength.style.color="#00d26a";
+
+    }
+
+});
+
+document.getElementById("registerForm").addEventListener("submit",function(e){
+
+    const pass=password.value;
+
+    const confirm=document.getElementById("confirmPassword").value;
+
+    if(pass!==confirm){
+
+        e.preventDefault();
+
+        alert("Passwords do not match.");
+
+        return;
+
+    }
+
+    document.getElementById("registerBtn").innerHTML=
+    '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
+
+});
+
+</script>
+
+</body>
+
+</html>

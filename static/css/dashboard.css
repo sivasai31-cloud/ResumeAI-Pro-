@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #050816;
+    color: white;
+    min-height: 100vh;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+
+    background: #080d1b;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+
+    padding: 35px 25px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: #818cf8;
+}
+
+.sidebar nav {
+    margin-top: 60px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.sidebar nav a {
+    padding: 15px 18px;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    color: white;
+
+    background: rgba(99, 102, 241, 0.15);
+}
+
+.logout {
+    margin-top: auto;
+
+    padding: 15px 18px;
+
+    color: #f87171;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+/* MAIN */
+
+.main-content {
+    flex: 1;
+
+    padding: 45px 55px;
+
+    background:
+        radial-gradient(
+            circle at 80% 10%,
+            rgba(79, 70, 229, 0.2),
+            transparent 30%
+        ),
+        #050816;
+}
+
+header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.welcome {
+    color: #818cf8;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+header h1 {
+    margin-top: 10px;
+
+    font-size: 35px;
+}
+
+header p {
+    margin-top: 8px;
+
+    color: #94a3b8;
+}
+
+.profile {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+/* HERO */
+
+.hero-card {
+    margin-top: 45px;
+
+    padding: 55px;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(37, 99, 235, 0.25),
+            rgba(124, 58, 237, 0.2)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-card span {
+    color: #a5b4fc;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.hero-card h2 {
+    margin-top: 18px;
+
+    max-width: 600px;
+
+    font-size: 42px;
+
+    line-height: 1.2;
+}
+
+.hero-card p {
+    margin-top: 18px;
+
+    max-width: 550px;
+
+    color: #cbd5e1;
+
+    line-height: 1.7;
+}
+
+.hero-card a {
+    display: inline-block;
+
+    margin-top: 30px;
+
+    padding: 15px 25px;
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: #111827;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+/* TOOLS */
+
+.tools {
+    margin-top: 45px;
+}
+
+.tools h2 {
+    font-size: 22px;
+}
+
+.tool-grid {
+    margin-top: 25px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+.tool-card {
+    padding: 30px;
+
+    border-radius: 20px;
+
+    background: rgba(15, 23, 42, 0.75);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    text-decoration: none;
+
+    color: white;
+
+    transition: 0.3s;
+}
+
+.tool-card:hover {
+    transform: translateY(-8px);
+
+    border-color: #6366f1;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(99, 102, 241, 0.15);
+
+    color: #a5b4fc;
+
+    font-size: 22px;
+}
+
+.tool-card h3 {
+    margin-top: 22px;
+
+    font-size: 19px;
+}
+
+.tool-card p {
+    margin-top: 12px;
+
+    color: #94a3b8;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+.tool-card span {
+    display: block;
+
+    margin-top: 25px;
+
+    color: #a5b4fc;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        padding: 30px;
+    }
+
+    .tool-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-card h2 {
+        font-size: 32px;
+    }
+}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ATS Checker | ResumeAI Pro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        .ats-page {
+            min-height: 100vh;
+
+            padding: 150px 30px 70px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+        .ats-card {
+            width: 100%;
+
+            max-width: 800px;
+
+            padding: 60px;
+
+            text-align: center;
+
+            border-radius: 30px;
+
+            background: rgba(15, 23, 42, 0.7);
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            backdrop-filter: blur(20px);
+        }
+
+        .ats-card h1 {
+            font-size: 52px;
+        }
+
+        .ats-card h1 span {
+            color: #818cf8;
+        }
+
+        .ats-card p {
+            max-width: 600px;
+
+            margin: 25px auto 0;
+
+            color: #94a3b8;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+        .ats-card a {
+            display: inline-block;
+
+            margin-top: 35px;
+
+            padding: 17px 30px;
+
+            border-radius: 13px;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            background: linear-gradient(
+                90deg,
+                #2563eb,
+                #7c3aed
+            );
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="{{ url_for('home') }}" class="logo">
+        ResumeAI <span>Pro</span>
+    </a>
+
+    <div class="menu">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('create_resume') }}">
+            Create Resume
+        </a>
+
+        <a href="{{ url_for('ats') }}">
+            ATS Checker
+        </a>
+
+        <a href="{{ url_for('about') }}">
+            About
+        </a>
+
+        <a href="{{ url_for('login') }}" class="login-link">
+            Login
+        </a>
+
+    </div>
+
+</nav>
+
+
+<section class="ats-page">
+
+    <div class="ats-card">
+
+        <h1>
+            AI <span>ATS Checker</span>
+        </h1>
+
+        <p>
+            Upload your PDF or DOCX resume and paste the job
+            description. ResumeAI Pro will analyze your ATS
+            structure, detect missing skills and calculate your
+            job match score.
+        </p>
+
+        <a href="{{ url_for('upload_resume') }}">
+            Analyze My Resume
+        </a>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

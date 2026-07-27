@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        ATS Resume Analyzer | ResumeAI Pro
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/ats.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="upload-container">
+
+
+    <div class="upload-card">
+
+
+        <div class="badge">
+
+            RESUMEAI PRO
+
+        </div>
+
+
+        <h1>
+
+            ATS Resume Analyzer
+
+        </h1>
+
+
+        <p class="subtitle">
+
+            Upload your resume and compare it
+            with a job description.
+
+        </p>
+
+
+        {% if error %}
+
+        <div class="error">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <form
+
+            action="{{ url_for('upload_resume') }}"
+
+            method="POST"
+
+            enctype="multipart/form-data"
+
+        >
+
+
+            <label
+
+                class="drop-zone"
+
+                for="resumeFile"
+
+            >
+
+
+                <div class="upload-icon">
+
+                    ↑
+
+                </div>
+
+
+                <strong id="fileName">
+
+                    Click to upload your resume
+
+                </strong>
+
+
+                <span>
+
+                    PDF or DOCX · Maximum 5 MB
+
+                </span>
+
+
+            </label>
+
+
+            <input
+
+                id="resumeFile"
+
+                type="file"
+
+                name="resume"
+
+                accept=".pdf,.docx"
+
+                hidden
+
+                required
+
+            >
+
+
+            <label class="job-label">
+
+                Job Description
+
+            </label>
+
+
+            <textarea
+
+                name="job_description"
+
+                class="job-description"
+
+                placeholder="Paste the complete job description here..."
+
+                required
+
+            ></textarea>
+
+
+            <button type="submit">
+
+                Analyze Resume
+
+            </button>
+
+
+        </form>
+
+
+        <a
+
+            href="/"
+
+            class="home-link"
+
+        >
+
+            ← Back to Home
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+const fileInput =
+    document.getElementById(
+        "resumeFile"
+    );
+
+
+const fileName =
+    document.getElementById(
+        "fileName"
+    );
+
+
+fileInput.addEventListener(
+
+    "change",
+
+    function () {
+
+
+        if (
+            this.files.length > 0
+        ) {
+
+            fileName.textContent =
+                this.files[0].name;
+
+        }
+
+
+    }
+
+);
+
+
+</script>
+
+
+</body>
+
+</html>
