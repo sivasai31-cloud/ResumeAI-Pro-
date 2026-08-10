@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume Builder HUD — ResumeAI Pro{% endblock %}
+
+{% block content %}
+<!-- Hidden Initial JSON data container -->
+<script id="initial-resume-json" type="application/json">
+{{ resume|tojson if resume is mapping else resume|string }}
+</script>
+
+<div style="padding: 24px 32px;">
+    <!-- Top Action Toolbar -->
+    <div class="glass-card" style="padding: 16px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <input type="text" id="resume-title-input" class="form-control" value="{{ resume.title if resume else 'My Resume' }}" style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; max-width: 280px;">
+            
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label style="font-size: 0.85rem; color: #94A3B8; font-weight: 500;">Template:</label>
+                <select id="template-select" class="form-control" style="padding: 8px 12px; font-size: 0.85rem; width: auto;">
+                    <option value="ats_minimal" {% if resume.template_name == 'ats_minimal' %}selected{% endif %}>ATS Minimal</option>
+                    <option value="modern" {% if resume.template_name == 'modern' %}selected{% endif %}>Modern</option>
+                    <option value="executive" {% if resume.template_name == 'executive' %}selected{% endif %}>Executive</option>
+                    <option value="developer_dark" {% if resume.template_name == 'developer_dark' %}selected{% endif %}>Developer Dark</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button type="button" id="save-resume-btn" class="btn-primary btn-sm"><i class="fas fa-save"></i> Save (Ctrl+S)</button>
+            {% if resume and resume.id and resume.id != 0 %}
+                <a href="{{ url_for('download_pdf', resume_id=resume.id) }}" class="btn-glass btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                <a href="{{ url_for('download_docx', resume_id=resume.id) }}" class="btn-glass btn-sm"><i class="fas fa-file-word"></i> Export DOCX</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Builder Split Layout (Form on Left, Live Preview HUD on Right) -->
+    <div class="builder-layout">
+        <!-- Form Left Column -->
+        <div id="builder-form-container" class="glass-card" style="padding: 28px;">
+            <!-- Step Nav Tabs -->
+            <div class="form-step-nav">
+                <button type="button" class="step-btn active" data-step="personal"><i class="fas fa-user"></i> Personal</button>
+                <button type="button" class="step-btn" data-step="summary"><i class="fas fa-align-left"></i> Summary</button>
+                <button type="button" class="step-btn" data-step="experience"><i class="fas fa-briefcase"></i> Experience</button>
+                <button type="button" class="step-btn" data-step="education"><i class="fas fa-graduation-cap"></i> Education</button>
+                <button type="button" class="step-btn" data-step="skills"><i class="fas fa-cogs"></i> Skills</button>
+                <button type="button" class="step-btn" data-step="projects"><i class="fas fa-code-branch"></i> Projects</button>
+            </div>
+
+            <!-- Step 1: Personal Info -->
+            <div id="section-personal" class="form-section-block">
+                <h3 style="font-size: 1.1rem; margin-bottom: 16px; color: var(--neon-cyan);" class="font-heading">Personal Information</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="p-fullName" class="form-control" placeholder="Alex Chen">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Job Title / Headline</label>
+                        <input type="text" id="p-jobTitle" class="form-control" placeholder="Senior AI Engineer">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="p-email" class="form-control" placeholder="alex@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" id="p-phone" class="form-control" placeholder="+1 (555) 234-5678">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Location (City, Country)</label>
+                        <input type="text" id="p-location" class="form-control" placeholder="San Francisco, CA">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Portfolio Website / Link</label>
+                        <input type="text" id="p-website" class="form-control" placeholder="https://alexchen.dev">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Professional Summary -->
+            <div id="section-summary" class="form-section-block" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.1rem; color: var(--neon-cyan);" class="font-heading">Professional Summary</h3>
+                    <button type="button" id="ai-generate-summary-btn" class="btn-primary btn-sm"><i class="fas fa-magic"></i> Generate with AI</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Summary Text</label>
+                    <textarea id="summary-input" class="form-control" style="min-height: 140px;" placeholder="Write a concise overview of your background, years of experience, key technical achievements, and career focus..."></textarea>
+                </div>
+            </div>
+
+            <!-- Step 3: Work Experience -->
+            <div id="section-experience" class="form-section-block" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.1rem; color: var(--neon-cyan);" class="font-heading">Work Experience</h3>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" id="ai-improve-exp-btn" class="btn-primary btn-sm"><i class="fas fa-bolt"></i> Improve with AI</button>
+                        <button type="button" class="btn-glass btn-sm" onclick="addExperienceBlock()"><i class="fas fa-plus"></i> Add Item</button>
+                    </div>
+                </div>
+                <div id="experience-blocks-container">
+                    <div class="glass-card experience-item-block form-group" style="padding: 16px;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                            <input type="text" class="form-control exp-position" placeholder="Job Title (e.g. Lead Software Engineer)">
+                            <input type="text" class="form-control exp-company" placeholder="Company Name (e.g. NeuralTech)">
+                            <input type="text" class="form-control exp-startDate" placeholder="Start Date (e.g. 2022)">
+                            <input type="text" class="form-control exp-endDate" placeholder="End Date (e.g. Present)">
+                        </div>
+                        <textarea class="form-control exp-bullets" style="margin-top:8px;" placeholder="Bullet point achievements (one per line)..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Education -->
+            <div id="section-education" class="form-section-block" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.1rem; color: var(--neon-cyan);" class="font-heading">Education</h3>
+                    <button type="button" class="btn-glass btn-sm" onclick="addEducationBlock()"><i class="fas fa-plus"></i> Add Item</button>
+                </div>
+                <div id="education-blocks-container">
+                    <div class="glass-card education-item-block form-group" style="padding: 16px;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                            <input type="text" class="form-control edu-institution" placeholder="University Name">
+                            <input type="text" class="form-control edu-degree" placeholder="Degree (e.g. B.S. Computer Science)">
+                            <input type="text" class="form-control edu-startDate" placeholder="Start Year">
+                            <input type="text" class="form-control edu-endDate" placeholder="Graduation Year">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Skills -->
+            <div id="section-skills" class="form-section-block" style="display: none;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 16px; color: var(--neon-cyan);" class="font-heading">Technical Skills</h3>
+                <div class="form-group">
+                    <label class="form-label">Comma-separated Skills & Keywords</label>
+                    <textarea id="skills-input" class="form-control" placeholder="Python, Flask, React, TypeScript, Docker, PostgreSQL, REST APIs, AWS, PyTorch"></textarea>
+                </div>
+            </div>
+
+            <!-- Step 6: Projects -->
+            <div id="section-projects" class="form-section-block" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.1rem; color: var(--neon-cyan);" class="font-heading">Key Projects</h3>
+                    <button type="button" id="addProjectBtn" class="btn-primary btn-sm"><i class="fas fa-plus"></i> + Add Project</button>
+                </div>
+                <div id="projectsContainer"></div>
+            </div>
+        </div>
+
+        <!-- Right Live Preview HUD Column -->
+        <div>
+            <div style="position: sticky; top: 90px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span style="font-family: var(--font-heading); font-size: 0.9rem; font-weight: 600; color: #CBD5E1;">
+                        <i class="fas fa-eye text-gradient-cyan" style="margin-right:6px;"></i> Live Resume Preview HUD
+                    </span>
+                    <span class="badge-neon badge-success"><i class="fas fa-sync fa-spin"></i> Live Sync</span>
+                </div>
+
+                <!-- Resume Paper Canvas -->
+                <div id="live-resume-paper" class="resume-paper tmpl-modern">
+                    <!-- Dynamic Live HTML Injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Prefill inputs from loaded JSON state
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.currentResumeState) return;
+    const p = window.currentResumeState.personal_info || {};
+    if (typeof p === 'string') {
+        try { window.currentResumeState.personal_info = JSON.parse(p); } catch(e){}
+    }
+    const pInfo = window.currentResumeState.personal_info || {};
+    
+    if(document.getElementById('p-fullName')) document.getElementById('p-fullName').value = pInfo.fullName || '';
+    if(document.getElementById('p-jobTitle')) document.getElementById('p-jobTitle').value = pInfo.jobTitle || '';
+    if(document.getElementById('p-email')) document.getElementById('p-email').value = pInfo.email || '';
+    if(document.getElementById('p-phone')) document.getElementById('p-phone').value = pInfo.phone || '';
+    if(document.getElementById('p-location')) document.getElementById('p-location').value = pInfo.location || '';
+    if(document.getElementById('p-website')) document.getElementById('p-website').value = pInfo.website || '';
+    
+    if(document.getElementById('summary-input')) document.getElementById('summary-input').value = window.currentResumeState.summary || '';
+    
+    const sk = window.currentResumeState.skills;
+    if(document.getElementById('skills-input')) {
+        document.getElementById('skills-input').value = Array.isArray(sk) ? sk.join(', ') : (sk || '');
+    }
+});
+
+// ──────────────────────────────────────────────────────────────────
+// ATS AI Suggestions Import
+// Show a banner if the user arrived from the ATS Optimizer page.
+// ──────────────────────────────────────────────────────────────────
+(function importATSSuggestions() {
+    try {
+        const raw = localStorage.getItem('ats_ai_suggestions');
+        if (!raw) return;
+        const payload = JSON.parse(raw);
+        if (!payload || !payload.content) return;
+
+        // Clear immediately so it doesn't reappear on refresh
+        localStorage.removeItem('ats_ai_suggestions');
+
+        // Build banner HTML
+        const banner = document.createElement('div');
+        banner.id = 'ats-suggestions-banner';
+        banner.style.cssText = [
+            'position:fixed', 'bottom:24px', 'right:24px', 'z-index:9999',
+            'max-width:420px', 'width:calc(100% - 48px)',
+            'background:linear-gradient(135deg,rgba(124,58,237,0.95),rgba(79,70,229,0.95))',
+            'border:1px solid rgba(167,139,250,0.4)',
+            'border-radius:16px', 'padding:20px 24px',
+            'box-shadow:0 8px 32px rgba(0,0,0,0.5)',
+            'backdrop-filter:blur(16px)',
+            'animation:slideInRight 0.4s ease'
+        ].join(';');
+
+        banner.innerHTML = `
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
+                <div>
+                    <div style="font-size:0.75rem;font-weight:700;color:#c4b5fd;letter-spacing:0.08em;margin-bottom:4px;">
+                        ✨ ATS AI SUGGESTIONS IMPORTED
+                    </div>
+                    <div style="font-size:0.92rem;font-weight:600;color:#fff;">
+                        Role: ${payload.role || 'Target Role'}
+                    </div>
+                </div>
+                <button onclick="document.getElementById('ats-suggestions-banner').remove();"
+                        style="background:none;border:none;color:rgba(255,255,255,0.6);font-size:1.2rem;cursor:pointer;padding:0;line-height:1;margin-left:12px;">✕</button>
+            </div>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.75);margin-bottom:12px;line-height:1.4;">
+                Paste the sections below into your resume fields — Skills, Experience bullets, and Summary.
+            </p>
+            <textarea id="ats-suggestion-text"
+                      readonly
+                      style="width:100%;min-height:120px;background:rgba(0,0,0,0.3);border:1px solid rgba(167,139,250,0.3);border-radius:8px;padding:10px;font-size:0.78rem;color:#e2e8f0;resize:vertical;font-family:'Courier New',monospace;line-height:1.5;"
+            >${payload.content}</textarea>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+                <button id="ats-copy-btn"
+                        onclick="(function(){
+                            const ta=document.getElementById('ats-suggestion-text');
+                            navigator.clipboard.writeText(ta.value).then(()=>showToast('Copied!','success')).catch(()=>{ta.select();document.execCommand('copy');showToast('Copied!','success');});
+                        })()"
+                        style="flex:1;padding:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-size:0.82rem;cursor:pointer;font-weight:600;">
+                    📋 Copy All
+                </button>
+                <button onclick="document.getElementById('ats-suggestions-banner').remove();"
+                        style="padding:8px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:rgba(255,255,255,0.7);font-size:0.82rem;cursor:pointer;">
+                    Dismiss
+                </button>
+            </div>`;
+
+        document.body.appendChild(banner);
+
+        if (typeof showToast === 'function') {
+            showToast('ATS AI suggestions loaded — see the bottom-right panel!', 'success');
+        }
+    } catch (e) {
+        // Fail silently — localStorage may be blocked
+    }
+})();
+</script>
+{% endblock %}
+

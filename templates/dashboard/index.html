@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard — ResumeAI Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Left Column: Navigation Sidebar -->
+    {% include 'components/sidebar.html' %}
+
+    <!-- Center Column: Active Main Workspace -->
+    <main class="dash-main">
+        <!-- Futuristic Welcome Banner -->
+        <div class="dash-header-banner">
+            <div>
+                <div class="badge-neon" style="margin-bottom:8px;"><i class="fas fa-microchip"></i> AI SYSTEM ONLINE</div>
+                <h1 style="font-size: 1.8rem;" class="font-heading">Welcome back, <span class="text-gradient">{{ session.get('username') }}</span></h1>
+                <p style="color: #CBD5E1; font-size: 0.95rem; margin-top: 4px;">Your AI resumes are 92% optimized for target tech roles.</p>
+            </div>
+            <div>
+                <a href="{{ url_for('builder') }}" class="btn-primary"><i class="fas fa-plus"></i> New Resume</a>
+            </div>
+        </div>
+
+        <!-- Quick Stats Grid -->
+        <div class="quick-stats-grid">
+            <div class="glass-card stat-card">
+                <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                <div>
+                    <p style="color: #94A3B8; font-size: 0.8rem; font-weight: 500;">ACTIVE RESUMES</p>
+                    <h3 style="font-size: 1.4rem;">{{ resumes|length }}</h3>
+                </div>
+            </div>
+
+            <div class="glass-card stat-card">
+                <div class="stat-icon" style="background:rgba(6,182,212,0.2); color:var(--neon-cyan);"><i class="fas fa-bullseye"></i></div>
+                <div>
+                    <p style="color: #94A3B8; font-size: 0.8rem; font-weight: 500;">AVG ATS SCORE</p>
+                    <h3 style="font-size: 1.4rem;">{{ avg_score }}%</h3>
+                </div>
+            </div>
+
+            <div class="glass-card stat-card">
+                <div class="stat-icon" style="background:rgba(124,58,237,0.2); color:var(--neon-purple);"><i class="fas fa-globe"></i></div>
+                <div>
+                    <p style="color: #94A3B8; font-size: 0.8rem; font-weight: 500;">PORTFOLIO STATUS</p>
+                    <h3 style="font-size: 1.4rem;">{% if portfolio %}Published{% else %}Draft{% endif %}</h3>
+                </div>
+            </div>
+
+            <div class="glass-card stat-card">
+                <div class="stat-icon" style="background:rgba(16,185,129,0.2); color:var(--neon-emerald);"><i class="fas fa-eye"></i></div>
+                <div>
+                    <p style="color: #94A3B8; font-size: 0.8rem; font-weight: 500;">PORTFOLIO VIEWS</p>
+                    <h3 style="font-size: 1.4rem;">{{ portfolio['analytics_views'] if portfolio else 0 }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Resumes Section -->
+        <div class="glass-card" style="padding: 24px; margin-bottom: 32px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 1.2rem;" class="font-heading"><i class="fas fa-history text-gradient" style="margin-right:8px;"></i> Recent Resumes</h3>
+                <a href="{{ url_for('builder') }}" class="btn-glass btn-sm"><i class="fas fa-plus"></i> Create New</a>
+            </div>
+
+            {% if resumes %}
+                <div style="display: grid; gap: 12px;">
+                    {% for r in resumes %}
+                        <div class="glass-card" style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02);">
+                            <div>
+                                <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 4px;">{{ r.title }}</h4>
+                                <p style="font-size: 0.8rem; color: #94A3B8;">
+                                    Template: <span class="badge-neon">{{ r.template_name }}</span> • ATS Score: <strong style="color:var(--neon-emerald);">{{ r.ats_score }}%</strong>
+                                </p>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="{{ url_for('builder', resume_id=r.id) }}" class="btn-glass btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                <a href="{{ url_for('download_pdf', resume_id=r.id) }}" class="btn-glass btn-sm"><i class="fas fa-file-pdf"></i> PDF</a>
+                                <a href="{{ url_for('download_docx', resume_id=r.id) }}" class="btn-glass btn-sm"><i class="fas fa-file-word"></i> DOCX</a>
+                                <button type="button" class="btn-glass btn-sm" onclick="if(confirm('Delete resume?')) fetch('/api/delete-resume/{{ r.id }}', {method:'POST'}).then(()=>location.reload());"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 40px; color: #94A3B8;">
+                    <i class="fas fa-folder-open fa-2x" style="margin-bottom: 12px;"></i>
+                    <p>No resumes created yet. Click below to start building with AI.</p>
+                    <a href="{{ url_for('builder') }}" class="btn-primary btn-sm" style="margin-top: 12px;"><i class="fas fa-magic"></i> Launch Resume Builder</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Actions & ATS Reports History -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div class="glass-card" style="padding: 24px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 16px;" class="font-heading"><i class="fas fa-bolt text-gradient-cyan" style="margin-right:8px;"></i> Quick Actions</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="{{ url_for('ats_scanner') }}" class="btn-glass" style="justify-content: flex-start;"><i class="fas fa-upload" style="color:var(--neon-cyan);"></i> Scan Resume for ATS Score</a>
+                    <a href="{{ url_for('cover_letter') }}" class="btn-glass" style="justify-content: flex-start;"><i class="fas fa-envelope-open-text" style="color:var(--neon-purple);"></i> Generate Cover Letter with AI</a>
+                    <a href="{{ url_for('portfolio_builder') }}" class="btn-glass" style="justify-content: flex-start;"><i class="fas fa-globe" style="color:var(--neon-emerald);"></i> Build Personal Web Portfolio</a>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 24px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 16px;" class="font-heading"><i class="fas fa-chart-pie text-gradient" style="margin-right:8px;"></i> Recent ATS Audits</h3>
+                {% if reports %}
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+                        {% for rep in reports[:3] %}
+                            <li style="display: flex; justify-content: space-between; font-size: 0.85rem; padding-bottom: 8px; border-bottom: 1px solid var(--border-glass);">
+                                <span>{{ rep.job_title }} ({{ rep.file_name }})</span>
+                                <span class="badge-neon badge-success">{{ rep.score }}% Match</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p style="font-size: 0.85rem; color: #94A3B8;">No ATS audits performed yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Right Column: HUD Preview & Score Ring Gauge -->
+    <aside class="dash-right-hud">
+        <div class="glass-card hud-panel" style="text-align: center;">
+            <p style="font-size: 0.8rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; margin-bottom: 16px;">Overall Profile Score</p>
+            
+            <div class="progress-ring-container" style="margin: 0 auto 16px auto;">
+                <svg class="progress-ring-svg" width="120" height="120">
+                    <defs>
+                        <linearGradient id="score-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#06B6D4" />
+                            <stop offset="100%" stop-color="#7C3AED" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="progress-ring-circle-bg" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                    <circle class="progress-ring-circle" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" style="stroke-dashoffset: 26;"/>
+                </svg>
+                <div class="progress-ring-text text-gradient">{{ avg_score }}%</div>
+            </div>
+
+            <span class="badge-neon badge-success"><i class="fas fa-shield-check"></i> High ATS Optimization</span>
+            <p style="font-size: 0.8rem; color: #94A3B8; margin-top: 12px;">Your resume matches top keywords for senior technical roles.</p>
+        </div>
+
+        <div class="glass-card hud-panel">
+            <h4 style="font-size: 0.95rem; margin-bottom: 12px;" class="font-heading"><i class="fas fa-robot text-gradient" style="margin-right:6px;"></i> AI Insights</h4>
+            <div style="font-size: 0.82rem; color: #CBD5E1; display: flex; flex-direction: column; gap: 8px;">
+                <p><i class="fas fa-check-circle" style="color:var(--neon-emerald); margin-right:6px;"></i> Quantified impact metrics detected.</p>
+                <p><i class="fas fa-exclamation-circle" style="color:var(--neon-pink); margin-right:6px;"></i> Consider adding Docker & Kubernetes keywords for DevOps roles.</p>
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}

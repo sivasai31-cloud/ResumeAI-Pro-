@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}ResumeAI Pro — Futuristic AI Resume & Portfolio Builder{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section style="position:relative; padding: 120px 20px 80px 20px; text-align:center; max-width: 1200px; margin: 0 auto;">
+    <div class="badge-neon" style="margin-bottom: 20px; display:inline-block; font-size:0.85rem; padding:6px 16px;">
+        <i class="fas fa-sparkles"></i> NEXT-GEN AI RESUME & PORTFOLIO ENGINE
+    </div>
+
+    <h1 style="font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin-bottom: 24px;" class="font-heading">
+        Build <span class="text-gradient">ATS-Friendly Resumes</span> & <br>
+        <span class="text-gradient-cyan">Futuristic Portfolios</span> in Minutes
+    </h1>
+
+    <p style="font-size: 1.25rem; color: #94A3B8; max-width: 750px; margin: 0 auto 40px auto;">
+        Build Intelligent Resumes & Futuristic Portfolios with AI. Outsmart legacy ATS screeners, optimize keyword density, and publish 3D web portfolios automatically.
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 60px;">
+        <a href="{{ url_for('register') }}" class="btn-primary" style="padding: 16px 36px; font-size: 1.1rem;">
+            <i class="fas fa-wand-magic-sparkles"></i> Create Resume Free
+        </a>
+        <a href="{{ url_for('ats_scanner') if session.get('user_id') else url_for('login') }}" class="btn-glass" style="padding: 16px 36px; font-size: 1.1rem;">
+            <i class="fas fa-upload"></i> Upload & Check ATS Score
+        </a>
+        <a href="{{ url_for('portfolio_builder') if session.get('user_id') else url_for('login') }}" class="btn-glass" style="padding: 16px 36px; font-size: 1.1rem; border-color:var(--neon-cyan);">
+            <i class="fas fa-globe"></i> Generate Portfolio
+        </a>
+    </div>
+
+    <!-- Interactive Hero Preview Card -->
+    <div class="glass-card glass-card-3d" style="padding: 24px; border-radius: 24px; border-color: var(--border-glass-glow); max-width: 1000px; margin: 0 auto; box-shadow: var(--shadow-3d);">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid var(--border-glass); margin-bottom: 20px;">
+            <div style="display: flex; gap: 8px;">
+                <span style="width: 12px; height: 12px; border-radius: 50%; background: #FF5F56; display: inline-block;"></span>
+                <span style="width: 12px; height: 12px; border-radius: 50%; background: #FFBD2E; display: inline-block;"></span>
+                <span style="width: 12px; height: 12px; border-radius: 50%; background: #27C93F; display: inline-block;"></span>
+            </div>
+            <span style="font-family: var(--font-heading); font-size: 0.85rem; color: #94A3B8;">ResumeAI Pro — Real-time Live Engine HUD</span>
+            <span class="badge-neon badge-success"><i class="fas fa-check-circle"></i> 98% ATS Match</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left;">
+            <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; border: 1px solid var(--border-glass);">
+                <h4 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fas fa-sliders-h"></i> Live Form Input</h4>
+                <p style="font-size:0.85rem; color:#CBD5E1; margin-bottom:8px;">Job Title: Senior AI Systems Architect</p>
+                <p style="font-size:0.85rem; color:#CBD5E1; margin-bottom:8px;">Summary: Spearheaded low-latency LLM microservices...</p>
+                <div class="badge-neon" style="margin-top:10px;"><i class="fas fa-bolt"></i> Auto-synced in 12ms</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; border: 1px solid var(--border-glass);">
+                <h4 style="color: var(--neon-purple); margin-bottom: 10px;"><i class="fas fa-eye"></i> Instant Preview HUD</h4>
+                <div style="background:#FFF; color:#0F172A; padding:12px; border-radius:8px; font-size:0.75rem;">
+                    <strong style="color:#2563EB; font-size:0.9rem;">Alex Chen</strong> — AI Engineer<br>
+                    • Architected automated CI/CD pipelines reducing deployment regression by 50%.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Grid -->
+<section id="features" style="padding: 100px 20px; max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+        <h2 style="font-size: 2.5rem;" class="font-heading">Engineered for <span class="text-gradient">Maximum Recruiter Impact</span></h2>
+        <p style="color: #94A3B8;">Everything you need to land interviews at top tech companies and startups.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px;">
+        <div class="glass-card glass-card-3d" style="padding: 32px;">
+            <div class="stat-icon" style="margin-bottom: 20px; width: 60px; height: 60px; font-size: 1.8rem;">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h3 style="font-size: 1.3rem; margin-bottom: 12px;">Gemini AI Assistant</h3>
+            <p style="color: #94A3B8; font-size: 0.95rem;">One-click summary optimization, action verb enhancement, and custom cover letter generation backed by Google Gemini API.</p>
+        </div>
+
+        <div class="glass-card glass-card-3d" style="padding: 32px;">
+            <div class="stat-icon" style="margin-bottom: 20px; width: 60px; height: 60px; font-size: 1.8rem; background:rgba(6,182,212,0.2); color:var(--neon-cyan);">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <h3 style="font-size: 1.3rem; margin-bottom: 12px;">ATS Scanner & Recruiter Simulator</h3>
+            <p style="color: #94A3B8; font-size: 0.95rem;">Parse PDF/DOCX files, generate real-time 0-100 ATS scores, view keyword heatmaps, and simulate recruiter evaluation notes.</p>
+        </div>
+
+        <div class="glass-card glass-card-3d" style="padding: 32px;">
+            <div class="stat-icon" style="margin-bottom: 20px; width: 60px; height: 60px; font-size: 1.8rem; background:rgba(124,58,237,0.2); color:var(--neon-purple);">
+                <i class="fas fa-globe"></i>
+            </div>
+            <h3 style="font-size: 1.3rem; margin-bottom: 12px;">Instant Portfolio Generator</h3>
+            <p style="color: #94A3B8; font-size: 0.95rem;">Turn your resume into a responsive, single-page web portfolio with 4 futuristic themes, interactive project grids, and downloadable ZIP export.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" style="padding: 100px 20px; max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+        <h2 style="font-size: 2.5rem;" class="font-heading">Simple, Transparent <span class="text-gradient-cyan">Pricing</span></h2>
+        <p style="color: #94A3B8;">Choose the plan built for your career stage.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; align-items: center;">
+        <!-- Free Plan -->
+        <div class="glass-card" style="padding: 36px; border-radius: 20px;">
+            <h3 style="font-size: 1.4rem; margin-bottom: 10px;">Free</h3>
+            <p style="font-size: 2.2rem; font-weight: 700; color: #FFF; margin-bottom: 20px;">₹0 <span style="font-size: 1rem; color: #94A3B8; font-weight:400;">/ forever</span></p>
+            <ul style="list-style: none; color: #CBD5E1; font-size: 0.95rem; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> 1 Resume</li>
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> Basic ATS Score</li>
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> 1 Portfolio Export</li>
+            </ul>
+            <a href="{{ url_for('register') }}" class="btn-glass" style="width: 100%; justify-content: center;">Get Started Free</a>
+        </div>
+
+        <!-- Pro Student Plan (Highlighted) -->
+        <div class="glass-card pro-student-card" style="padding: 36px; border-radius: 20px; position: relative; border: 2px solid transparent; background: linear-gradient(135deg, rgba(7,9,19,0.95), rgba(15,23,42,0.95)) padding-box, linear-gradient(135deg, #06B6D4, #7C3AED) border-box; box-shadow: 0 0 35px rgba(6, 182, 212, 0.35); transform: scale(1.04); z-index: 2;">
+            <div class="badge-neon" style="margin-bottom: 12px; background: rgba(6, 182, 212, 0.2); border-color: #06B6D4;"><i class="fas fa-crown"></i> MOST POPULAR</div>
+            <h3 style="font-size: 1.4rem; margin-bottom: 10px;">Pro Student</h3>
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 2.2rem; font-weight: 700; color: #FFF; margin: 0;">₹99 <span style="font-size: 1rem; color: #94A3B8; font-weight:400;">/ month</span></p>
+                <p style="font-size: 0.88rem; color: var(--neon-cyan); margin-top: 4px; font-weight: 600;">or ₹699 / year (Save 40%)</p>
+            </div>
+            <ul style="list-style: none; color: #CBD5E1; font-size: 0.95rem; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
+                <li><i class="fas fa-check text-gradient-cyan" style="margin-right:8px;"></i> Unlimited Resumes</li>
+                <li><i class="fas fa-check text-gradient-cyan" style="margin-right:8px;"></i> AI Resume Summary</li>
+                <li><i class="fas fa-check text-gradient-cyan" style="margin-right:8px;"></i> AI Experience Rewriter</li>
+                <li><i class="fas fa-check text-gradient-cyan" style="margin-right:8px;"></i> Advanced ATS Analysis</li>
+                <li><i class="fas fa-check text-gradient-cyan" style="margin-right:8px;"></i> Unlimited Portfolio Exports</li>
+                <li><i class="fas fa-check text-gradient-cyan" style="margin-right:8px;"></i> PDF + DOCX Download</li>
+                <li><i class="fas fa-check text-gradient-cyan" style="margin-right:8px;"></i> Priority Support</li>
+            </ul>
+            <a href="{{ url_for('register') }}" class="btn-primary" style="width: 100%; justify-content: center; padding: 14px;">Upgrade to Pro Student</a>
+        </div>
+
+        <!-- Lifetime Launch Offer Plan -->
+        <div class="glass-card" style="padding: 36px; border-radius: 20px;">
+            <div class="badge-neon" style="margin-bottom: 12px; background: rgba(124, 58, 237, 0.2); border-color: #7C3AED; color: #A78BFA;"><i class="fas fa-bolt"></i> LIMITED TIME</div>
+            <h3 style="font-size: 1.4rem; margin-bottom: 10px;">Lifetime Launch Offer</h3>
+            <p style="font-size: 2.2rem; font-weight: 700; color: #FFF; margin-bottom: 20px;">₹999 <span style="font-size: 1rem; color: #94A3B8; font-weight:400;">/ one-time</span></p>
+            <ul style="list-style: none; color: #CBD5E1; font-size: 0.95rem; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> Unlimited AI Features</li>
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> Lifetime Updates</li>
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> Portfolio Builder</li>
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> ATS Checker</li>
+                <li><i class="fas fa-check text-gradient" style="margin-right:8px;"></i> Cover Letter Generator</li>
+            </ul>
+            <a href="{{ url_for('register') }}" class="btn-glass" style="width: 100%; justify-content: center;">Get Lifetime Access</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer style="border-top: 1px solid var(--border-glass); padding: 40px 20px; text-align: center; color: #64748B; font-size: 0.9rem;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); color: #FFF;">
+            <i class="fas fa-brain text-gradient"></i> ResumeAI Pro
+        </div>
+        <p>© 2026 ResumeAI Pro. All rights reserved. Powered by Google Gemini AI.</p>
+        <div style="display: flex; gap: 16px;">
+            <a href="#" style="color: #94A3B8;"><i class="fab fa-github fa-lg"></i></a>
+            <a href="#" style="color: #94A3B8;"><i class="fab fa-twitter fa-lg"></i></a>
+            <a href="#" style="color: #94A3B8;"><i class="fab fa-linkedin fa-lg"></i></a>
+        </div>
+    </div>
+</footer>
+{% endblock %}

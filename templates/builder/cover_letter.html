@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Cover Letter Generator — ResumeAI Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    {% include 'components/sidebar.html' %}
+
+    <main class="dash-main" style="grid-column: 2 / span 2;">
+        <div class="dash-header-banner">
+            <div>
+                <div class="badge-neon" style="margin-bottom:8px;"><i class="fas fa-magic"></i> AI WRITING ASSISTANT</div>
+                <h1 style="font-size: 1.8rem;" class="font-heading">AI <span class="text-gradient">Cover Letter Generator</span></h1>
+                <p style="color: #CBD5E1; font-size: 0.95rem; margin-top: 4px;">Generate personalized, high-converting cover letters matching your target position.</p>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <!-- Inputs Column -->
+            <div class="glass-card" style="padding: 28px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 20px; color: var(--neon-cyan);" class="font-heading">Cover Letter Inputs</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Select Base Resume</label>
+                    <select id="cl-resume-select" class="form-control">
+                        {% for r in resumes %}
+                            <option value="{{ r.id }}">{{ r.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Target Job Title</label>
+                    <input type="text" id="cl-job-title" class="form-control" placeholder="Senior Full-Stack AI Engineer">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Target Company Name</label>
+                    <input type="text" id="cl-company-name" class="form-control" placeholder="OpenAI / Google / Tech Startup">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Job Description Snippet (Optional)</label>
+                    <textarea id="cl-job-desc" class="form-control" style="min-height: 100px;" placeholder="Paste job requirements here for hyper-targeted cover letter matching..."></textarea>
+                </div>
+
+                <button type="button" id="generate-cl-btn" class="btn-primary" style="width: 100%; justify-content: center; padding: 14px;">
+                    <i class="fas fa-wand-magic-sparkles"></i> Generate AI Cover Letter
+                </button>
+            </div>
+
+            <!-- Preview Column -->
+            <div class="glass-card" style="padding: 28px; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.1rem;" class="font-heading"><i class="fas fa-eye text-gradient-cyan" style="margin-right:6px;"></i> Generated Letter Preview</h3>
+                    <button type="button" class="btn-glass btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('cl-output-text').value); showToast('Cover letter copied to clipboard!', 'success');"><i class="fas fa-copy"></i> Copy Text</button>
+                </div>
+
+                <textarea id="cl-output-text" class="form-control" style="flex: 1; min-height: 400px; font-family: 'Inter', sans-serif; font-size: 0.95rem; line-height: 1.6; background: rgba(0,0,0,0.2);" placeholder="Your AI-generated cover letter will appear here..."></textarea>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const genBtn = document.getElementById('generate-cl-btn');
+    if (!genBtn) return;
+    
+    genBtn.addEventListener('click', () => {
+        const resumeId = document.getElementById('cl-resume-select')?.value;
+        const jobTitle = document.getElementById('cl-job-title')?.value || 'Senior Engineer';
+        const companyName = document.getElementById('cl-company-name')?.value || 'Tech Company';
+        const jobDesc = document.getElementById('cl-job-desc')?.value || '';
+        const outputText = document.getElementById('cl-output-text');
+        
+        genBtn.disabled = true;
+        genBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Writing Cover Letter...`;
+        
+        fetch('/api/generate-cover-letter', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                resume_id: resumeId,
+                job_title: jobTitle,
+                company_name: companyName,
+                job_description: jobDesc
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            genBtn.disabled = false;
+            genBtn.innerHTML = `<i class="fas fa-wand-magic-sparkles"></i> Generate AI Cover Letter`;
+            if (data.status === 'success') {
+                outputText.value = data.cover_letter;
+                showToast('Cover letter generated with AI!', 'success');
+            }
+        })
+        .catch(err => {
+            genBtn.disabled = false;
+            genBtn.innerHTML = `<i class="fas fa-wand-magic-sparkles"></i> Generate AI Cover Letter`;
+            showToast('Error generating cover letter.', 'error');
+        });
+    });
+});
+</script>
+{% endblock %}

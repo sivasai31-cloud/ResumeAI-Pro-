@@ -1,0 +1,47 @@
+<!-- Floating AI Copilot Trigger Button -->
+<button id="ai-copilot-trigger" class="btn-primary" style="position:fixed; bottom:28px; right:28px; z-index:99; border-radius:50px; padding:14px 22px; box-shadow: 0 10px 30px rgba(37,99,235,0.6);">
+    <i class="fas fa-robot fa-lg"></i>
+    <span>AI Copilot</span>
+</button>
+
+<!-- Floating AI Drawer Panel -->
+<div id="ai-copilot-drawer" class="glass-card" style="position:fixed; top:80px; right:-420px; width:380px; height:calc(100vh - 100px); z-index:1000; border-radius:20px 0 0 20px; border-right:none; display:flex; flex-direction:column; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+    
+    <!-- Drawer Header -->
+    <div style="padding:16px 20px; border-bottom:1px solid var(--border-glass); display:flex; justify-content:space-between; align-items:center; background:rgba(7,9,19,0.7);">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-microchip text-gradient" style="font-size:1.3rem;"></i>
+            <div>
+                <h4 style="font-size:1rem; margin:0;">JARVIS AI Career Copilot</h4>
+                <p style="font-size:0.75rem; color:var(--neon-cyan); margin:0;">Online & Ready</p>
+            </div>
+        </div>
+        <button id="close-copilot-btn" class="btn-glass btn-sm"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Quick Action Chips -->
+    <div style="padding:12px 16px; border-bottom:1px solid var(--border-glass); display:flex; gap:6px; overflow-x:auto;">
+        <button class="badge-neon" style="cursor:pointer;" onclick="document.getElementById('copilot-input').value='How can I optimize my resume for ATS?'; handleCopilotSubmit();">ATS Tips</button>
+        <button class="badge-neon" style="cursor:pointer;" onclick="document.getElementById('copilot-input').value='Suggest top high-impact action verbs for software engineering.'; handleCopilotSubmit();">Action Verbs</button>
+        <button class="badge-neon" style="cursor:pointer;" onclick="document.getElementById('copilot-input').value='How to write a killer summary?'; handleCopilotSubmit();">Summary Tips</button>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="copilot-messages" style="flex:1; padding:16px; overflow-y:auto; display:flex; flex-direction:column;">
+        <div class="chat-msg ai-msg" style="align-self:flex-start; background:rgba(255,255,255,0.05); border:1px solid var(--border-glass); padding:12px; border-radius:12px; margin-bottom:10px; max-width:90%; font-size:0.88rem;">
+            <i class="fas fa-robot text-gradient" style="margin-right:6px;"></i> Hello! I'm your ResumeAI Copilot. Ask me anything about tailoring your resume, optimizing ATS scores, or writing cover letters.
+        </div>
+    </div>
+
+    <!-- Input Footer -->
+    <div style="padding:16px; border-top:1px solid var(--border-glass); background:rgba(7,9,19,0.7); display:flex; gap:10px;">
+        <input type="text" id="copilot-input" class="form-control" placeholder="Ask JARVIS AI..." style="font-size:0.88rem; padding:10px 14px;">
+        <button id="copilot-send-btn" class="btn-primary btn-sm" style="padding:10px 16px;"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<style>
+#ai-copilot-drawer.open {
+    right: 0 !important;
+}
+</style>

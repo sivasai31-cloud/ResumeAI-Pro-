@@ -1,0 +1,42 @@
+<nav class="hud-navbar">
+    <a href="{{ url_for('landing') }}" class="navbar-brand">
+        <i class="fas fa-brain text-gradient"></i>
+        <span>Resume<span class="text-gradient">AI</span> Pro</span>
+    </a>
+
+    <ul class="nav-links">
+        <li><a href="{{ url_for('landing') }}" class="nav-link">Home</a></li>
+        {% if session.get('user_id') %}
+            <li><a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a></li>
+            <li><a href="{{ url_for('builder') }}" class="nav-link">Resume Builder</a></li>
+            <li><a href="{{ url_for('ats_scanner') }}" class="nav-link">ATS Checker</a></li>
+            <li><a href="{{ url_for('portfolio_builder') }}" class="nav-link">Portfolio Generator</a></li>
+            <li><a href="{{ url_for('cover_letter') }}" class="nav-link">Cover Letter</a></li>
+            {% if session.get('role') == 'admin' %}
+                <li><a href="{{ url_for('admin') }}" class="nav-link" style="color:var(--neon-cyan);"><i class="fas fa-user-shield"></i> Admin</a></li>
+            {% endif %}
+        {% else %}
+            <li><a href="{{ url_for('landing') }}#features" class="nav-link">Features</a></li>
+            <li><a href="{{ url_for('landing') }}#pricing" class="nav-link">Pricing</a></li>
+        {% endif %}
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 14px;">
+        <!-- Theme Toggle Button -->
+        <button type="button" class="btn-glass btn-sm" id="theme-toggle-btn" title="Toggle Light/Dark Mode">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        {% if session.get('user_id') %}
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width:36px; height:36px; border-radius:50%; background:var(--gradient-primary); display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; border:1px solid var(--border-glass-glow);">
+                    {{ session.get('username', 'U')[0]|upper }}
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn-glass btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn-glass btn-sm">Log In</a>
+            <a href="{{ url_for('register') }}" class="btn-primary btn-sm">Get Started <i class="fas fa-arrow-right"></i></a>
+        {% endif %}
+    </div>
+</nav>

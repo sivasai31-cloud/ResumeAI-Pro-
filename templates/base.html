@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ResumeAI Pro — Build ATS Resumes & Futuristic Portfolios with AI{% endblock %}</title>
+    
+    <!-- Google Fonts: Space Grotesk & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Core Application CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/templates.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio_themes.css') }}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Background Particle Canvas & Glows -->
+    <canvas id="particle-canvas"></canvas>
+    <div class="aurora-glow-1"></div>
+    <div class="aurora-glow-2"></div>
+
+    <!-- Navigation Header -->
+    {% include 'components/navbar.html' %}
+
+    <!-- Main Content Block -->
+    <main style="position:relative; z-index:1;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div style="max-width: 1200px; margin: 16px auto 0 auto; padding: 0 20px;">
+                    {% for category, message in messages %}
+                        <div class="glass-card" style="padding:12px 20px; border-left:4px solid {% if category=='error' %}var(--neon-pink){% elif category=='success' %}var(--neon-emerald){% else %}var(--neon-cyan){% endif %}; margin-bottom:12px;">
+                            <i class="fas {% if category=='error' %}fa-exclamation-circle{% elif category=='success' %}fa-check-circle{% else %}fa-info-circle{% endif %}" style="margin-right:8px;"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Floating AI Copilot Drawer -->
+    {% include 'components/ai_copilot_drawer.html' %}
+
+    <!-- Core Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/builder.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ats.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ai_copilot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/portfolio.js') }}"></script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

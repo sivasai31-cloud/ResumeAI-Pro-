@@ -1,0 +1,6 @@
+Flask
+ollama
+python-docx
+reportlab
+pypdf
+textstat

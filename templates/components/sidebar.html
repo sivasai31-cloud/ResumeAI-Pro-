@@ -1,0 +1,37 @@
+<aside class="dash-sidebar">
+    <div>
+        <div style="padding: 0 8px 20px 8px; border-bottom: 1px solid var(--border-glass); margin-bottom: 20px;">
+            <p style="font-size:0.75rem; text-transform:uppercase; color:#64748B; font-weight:700; letter-spacing:1px;">Navigation</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-item {% if request.path == url_for('dashboard') %}active{% endif %}">
+                <a href="{{ url_for('dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
+            </li>
+            <li class="menu-item {% if request.path.startswith('/builder') %}active{% endif %}">
+                <a href="{{ url_for('builder') }}"><i class="fas fa-file-alt"></i> Resume Builder</a>
+            </li>
+            <li class="menu-item {% if request.path.startswith('/ats') %}active{% endif %}">
+                <a href="{{ url_for('ats_scanner') }}"><i class="fas fa-bullseye"></i> ATS Checker</a>
+            </li>
+            <li class="menu-item {% if request.path.startswith('/job-match') %}active{% endif %}">
+                <a href="{{ url_for('job_match') }}"><i class="fas fa-radar"></i> Job Matcher</a>
+            </li>
+            <li class="menu-item {% if request.path.startswith('/cover-letter') %}active{% endif %}">
+                <a href="{{ url_for('cover_letter') }}"><i class="fas fa-envelope-open-text"></i> Cover Letter</a>
+            </li>
+            <li class="menu-item {% if request.path.startswith('/portfolio') %}active{% endif %}">
+                <a href="{{ url_for('portfolio_builder') }}"><i class="fas fa-globe"></i> Portfolio Builder</a>
+            </li>
+            {% if session.get('role') == 'admin' %}
+                <li class="menu-item {% if request.path == url_for('admin') %}active{% endif %}">
+                    <a href="{{ url_for('admin') }}"><i class="fas fa-user-shield"></i> Admin Panel</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="glass-card" style="padding:16px; border-color:var(--border-glass-glow);">
+        <p style="font-size:0.8rem; color:#94A3B8; margin-bottom:8px;"><i class="fas fa-bolt text-gradient"></i> ResumeAI Pro v2.5</p>
+        <p style="font-size:0.75rem; color:#CBD5E1;">Gemini AI Assistant Ready</p>
+    </div>
+</aside>

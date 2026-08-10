@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}ATS Audit Report #{{ report.id }} — ResumeAI Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    {% include 'components/sidebar.html' %}
+
+    <main class="dash-main" style="grid-column: 2 / span 2;">
+        <div class="dash-header-banner">
+            <div>
+                <div class="badge-neon" style="margin-bottom:8px;"><i class="fas fa-file-invoice"></i> SAVED DIAGNOSTIC REPORT</div>
+                <h1 style="font-size: 1.8rem;" class="font-heading">ATS Report: <span class="text-gradient">{{ report.job_title }}</span></h1>
+                <p style="color: #CBD5E1; font-size: 0.95rem; margin-top: 4px;">File: {{ report.file_name }} • Created: {{ report.created_at }}</p>
+            </div>
+            <div>
+                <a href="{{ url_for('ats_scanner') }}" class="btn-glass btn-sm"><i class="fas fa-arrow-left"></i> Run New Scan</a>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 24px;">
+            <!-- Score Card -->
+            <div class="glass-card" style="padding: 28px; text-align: center;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 20px;" class="font-heading">Overall Match Rating</h3>
+                
+                <div class="progress-ring-container" style="margin: 0 auto 16px auto;">
+                    <svg class="progress-ring-svg" width="140" height="140">
+                        <circle class="progress-ring-circle-bg" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"/>
+                        <circle class="progress-ring-circle" stroke-width="10" fill="transparent" r="60" cx="70" cy="70" style="stroke-dashoffset: 40;"/>
+                    </svg>
+                    <div class="progress-ring-text text-gradient" style="font-size: 2rem;">{{ report.score }}%</div>
+                </div>
+
+                <p style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 12px;">Readability Index: <strong style="color:var(--neon-cyan);">{{ report.readability_score }}/100</strong></p>
+                <span class="badge-neon badge-success"><i class="fas fa-check-double"></i> Recruiter Approved Format</span>
+            </div>
+
+            <!-- Report Details -->
+            <div class="glass-card" style="padding: 28px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 20px;" class="font-heading"><i class="fas fa-list-check text-gradient"></i> Diagnostic Breakdown</h3>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.95rem; color: #CBD5E1; margin-bottom: 8px;">Matched Keywords</h4>
+                    <div>
+                        {% for k in report.matched_keywords|from_json if report.matched_keywords is string else report.matched_keywords %}
+                            <span class="badge-neon badge-success" style="margin: 4px;"><i class="fas fa-check"></i> {{ k }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.95rem; color: #CBD5E1; margin-bottom: 8px;">Missing Keywords</h4>
+                    <div>
+                        {% for k in report.missing_keywords|from_json if report.missing_keywords is string else report.missing_keywords %}
+                            <span class="badge-neon badge-warning" style="margin: 4px;"><i class="fas fa-times"></i> {{ k }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.95rem; color: #CBD5E1; margin-bottom: 8px;">ATS Suggestions</h4>
+                    <ul style="list-style: none; padding-left: 0; margin: 0; font-size: 0.88rem; color: #CBD5E1; line-height: 1.5;">
+                        {% for item in report.recommendations|from_json if report.recommendations is string else report.recommendations %}
+                            <li style="margin-bottom: 8px;"><i class="fas fa-arrow-right" style="color: var(--neon-cyan); margin-right: 8px;"></i>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.95rem; color: #CBD5E1; margin-bottom: 8px;">Recruiter AI Notes</h4>
+                    <div class="glass-card" style="padding: 14px; font-size: 0.88rem; color: #CBD5E1; background: rgba(37,99,235,0.1);">
+                        {{ report.recruiter_notes }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

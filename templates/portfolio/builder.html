@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Portfolio Builder & Exporter — ResumeAI Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    {% include 'components/sidebar.html' %}
+
+    <main class="dash-main" style="grid-column: 2 / span 2;">
+        <div class="dash-header-banner">
+            <div>
+                <div class="badge-neon" style="margin-bottom:8px;"><i class="fas fa-globe"></i> AUTOMATED WEB PORTFOLIO</div>
+                <h1 style="font-size: 1.8rem;" class="font-heading">AI <span class="text-gradient">Portfolio Builder & Exporter</span></h1>
+                <p style="color: #CBD5E1; font-size: 0.95rem; margin-top: 4px;">Instantly convert your resume data into a responsive personal portfolio website with 4 futuristic themes.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" id="save-portfolio-btn" class="btn-primary"><i class="fas fa-globe"></i> Save & Publish</button>
+                <button type="button" id="download-portfolio-zip-btn" class="btn-glass"><i class="fas fa-file-archive"></i> Download ZIP Bundle</button>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 320px 1fr; gap: 24px;">
+            <!-- Controls Sidebar -->
+            <div class="glass-card" style="padding: 24px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 20px; color: var(--neon-cyan);" class="font-heading">Customization Controls</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Base Resume Source</label>
+                    <select id="portfolio-resume-select" class="form-control">
+                        {% for r in resumes %}
+                            <option value="{{ r.id }}">{{ r.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Portfolio Title</label>
+                    <input type="text" id="portfolio-title-input" class="form-control" value="{{ portfolio.title if portfolio else 'Alex Chen | AI Engineer Portfolio' }}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Visual Theme</label>
+                    <select id="portfolio-theme-select" class="form-control">
+                        <option value="dark_glass" {% if portfolio and portfolio.theme == 'dark_glass' %}selected{% endif %}>Dark Glassmorphism</option>
+                        <option value="futuristic" {% if portfolio and portfolio.theme == 'futuristic' %}selected{% endif %}>Futuristic Cyber</option>
+                        <option value="modern" {% if portfolio and portfolio.theme == 'modern' %}selected{% endif %}>Modern Neon</option>
+                        <option value="minimal" {% if portfolio and portfolio.theme == 'minimal' %}selected{% endif %}>Minimal Slate</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">About / Bio</label>
+                    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+                        <button type="button" id="generate-about-btn" class="btn-primary btn-sm"><i class="fas fa-magic"></i> Generate About with AI</button>
+                    </div>
+                    <textarea id="portfolio-about-input" class="form-control" style="min-height: 140px;" placeholder="Write a short bio for the portfolio hero section...">{% if resumes %}{{ resumes[0].summary }}{% endif %}</textarea>
+                </div>
+
+                <div class="glass-card" style="padding: 16px; margin-top: 24px; background: rgba(37,99,235,0.1); border-color: var(--border-glass-glow);">
+                    <h4 style="font-size: 0.85rem; color: var(--neon-cyan); margin-bottom: 6px;" class="font-heading"><i class="fab fa-github"></i> GitHub Pages Deploy Guide</h4>
+                    <p style="font-size: 0.78rem; color: #CBD5E1; line-height: 1.4;">
+                        1. Click "Download ZIP Bundle" or export the standalone HTML file.<br>
+                        2. Copy the generated index.html to your repository.<br>
+                        3. Enable GitHub Pages in repository settings!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Live Portfolio Preview Frame -->
+            <div class="glass-card" style="padding: 12px; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border-glass); margin-bottom: 12px;">
+                    <span style="font-size: 0.85rem; color: #94A3B8;"><i class="fas fa-desktop" style="margin-right:6px;"></i> Live Website Preview</span>
+                    <a href="{{ url_for('portfolio_preview') }}" target="_blank" class="btn-glass btn-sm"><i class="fas fa-external-link-alt"></i> Open Full Screen</a>
+                </div>
+                
+                <iframe id="portfolio-preview-iframe" src="{{ url_for('portfolio_preview') }}?theme={{ portfolio.theme if portfolio else 'dark_glass' }}" style="width: 100%; height: 600px; border: none; border-radius: 12px; background: #070913;"></iframe>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

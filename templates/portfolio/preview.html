@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal.fullName if personal and personal.fullName else 'Candidate' }} — Personal Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio_themes.css') }}">
+</head>
+<body>
+    <div class="portfolio-canvas theme-{{ theme }}">
+        <!-- 3D Hero Illustration Section -->
+        <header class="hero-section">
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div class="badge-neon" style="margin-bottom: 20px;"><i class="fas fa-code"></i> PORTFOLIO & PROJECTS</div>
+                <h1 class="hero-title">{{ personal.fullName if personal and personal.fullName else 'Alex Chen' }}</h1>
+                <p style="font-size: 1.4rem; color: #CBD5E1; margin-bottom: 24px;">{{ personal.jobTitle if personal and personal.jobTitle else 'Senior Full-Stack AI Engineer' }}</p>
+                
+                <p style="font-size: 1rem; color: #94A3B8; max-width: 650px; margin: 0 auto 32px auto;">
+                    {{ about_text if about_text else (resume.summary if resume and resume.summary else 'Passionate engineer building high-throughput web applications, LLM microservices, and modern user interfaces.') }}
+                </p>
+
+                <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+                    {% if personal.email %}
+                        <a href="mailto:{{ personal.email }}" class="btn-primary"><i class="fas fa-envelope"></i> Contact Me</a>
+                    {% endif %}
+                    {% if resume %}
+                        <a href="{{ url_for('download_pdf', resume_id=resume.id) }}" class="btn-glass"><i class="fas fa-download"></i> Download Resume</a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
+        <!-- Technical Skills Section -->
+        {% if skills %}
+            <section class="port-section">
+                <h2 class="section-title"><i class="fas fa-cogs text-gradient" style="margin-right:10px;"></i> Technical Skills</h2>
+                <div class="skills-flex">
+                    {% for sk in skills %}
+                        <span class="skill-badge"><i class="fas fa-check text-gradient-cyan" style="margin-right:6px;"></i> {{ sk }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        <!-- Featured Projects Section -->
+        {% if projects %}
+            <section class="port-section">
+                <h2 class="section-title"><i class="fas fa-code-branch text-gradient-cyan" style="margin-right:10px;"></i> Featured Projects</h2>
+                <div class="projects-grid">
+                    {% for proj in projects %}
+                        <div class="glass-card card-box">
+                            <h3 style="font-size: 1.2rem; color: #FFF; margin-bottom: 8px;">{{ proj.name }}</h3>
+                            <p style="font-size: 0.8rem; color: var(--neon-cyan); margin-bottom: 12px;">Tech: {{ proj.techStack }}</p>
+                            <p style="font-size: 0.9rem; color: #94A3B8; margin-bottom: 16px;">{{ proj.description }}</p>
+                            {% if proj.link %}
+                                <a href="{{ proj.link }}" target="_blank" class="btn-glass btn-sm"><i class="fab fa-github"></i> View Project</a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        <!-- Work Experience Timeline Section -->
+        {% if experience %}
+            <section class="port-section">
+                <h2 class="section-title"><i class="fas fa-briefcase text-gradient" style="margin-right:10px;"></i> Work Experience</h2>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    {% for exp in experience %}
+                        <div class="glass-card" style="padding: 24px;">
+                            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 8px;">
+                                <h3 style="font-size: 1.1rem; color: #FFF;">{{ exp.position }} — <span style="color:var(--neon-cyan);">{{ exp.company }}</span></h3>
+                                <span style="font-size: 0.85rem; color: #94A3B8;">{{ exp.startDate }} - {{ exp.endDate }}</span>
+                            </div>
+                            <p style="font-size: 0.9rem; color: #CBD5E1; white-space: pre-line;">{{ exp.bullets }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        <!-- Footer -->
+        <footer style="padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-glass); color: #64748B; font-size: 0.85rem;">
+            <p>© 2026 {{ personal.fullName if personal and personal.fullName else 'Candidate' }}. Built with ResumeAI Pro.</p>
+        </footer>
+    </div>
+</body>
+</html>

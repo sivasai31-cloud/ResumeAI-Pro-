@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if is_job_match %}Job Match Analyzer{% else %}ATS Resume Checker{% endif %} — ResumeAI Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    {% include 'components/sidebar.html' %}
+
+    <main class="dash-main" style="grid-column: 2 / span 2;">
+        <div class="dash-header-banner">
+            <div>
+                <div class="badge-neon" style="margin-bottom:8px; background:rgba(6,182,212,0.2); color:var(--neon-cyan);"><i class="fas fa-microchip"></i> DEEP RECRUITER SIMULATION</div>
+                <h1 style="font-size: 1.8rem;" class="font-heading">{% if is_job_match %}Job Match <span class="text-gradient-cyan">Skill Gap Analyzer</span>{% else %}ATS Resume <span class="text-gradient">Checker &amp; Recruiter Simulator</span>{% endif %}</h1>
+                <p style="color: #CBD5E1; font-size: 0.95rem; margin-top: 4px;">Upload your resume PDF/DOCX or select a saved resume to analyze keyword density &amp; scannability.</p>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+            <!-- Upload & Config Column -->
+            <div class="glass-card" style="padding: 28px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 20px; color: var(--neon-cyan);" class="font-heading">1. Select or Upload Resume</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Option A: Select Saved Resume</label>
+                    <select id="ats-resume-select" class="form-control">
+                        <option value="0">-- Select from my saved resumes --</option>
+                        {% for r in resumes %}
+                            <option value="{{ r.id }}">{{ r.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Option B: Upload PDF or DOCX File</label>
+                    <div id="ats-drop-zone" class="glass-card" style="padding: 30px; text-align: center; border: 2px dashed var(--border-glass); cursor: pointer; background: var(--bg-glass-input);">
+                        <i class="fas fa-cloud-upload-alt text-gradient" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                        <p style="font-size: 0.95rem; color: #FFF; font-weight: 600;">Drag &amp; drop resume file here</p>
+                        <p style="font-size: 0.8rem; color: #94A3B8; margin-top: 4px;">Supports PDF &amp; DOCX format (Max 16MB)</p>
+                        <p id="file-name-display" style="font-size: 0.85rem; color: var(--neon-cyan); margin-top: 8px; font-weight: 600;"></p>
+                        <input type="file" id="ats-file-input" accept=".pdf,.docx" style="display: none;">
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.1rem; margin-top: 24px; margin-bottom: 16px; color: var(--neon-cyan);" class="font-heading">2. Target Job Details</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Target Job Title</label>
+                    <input type="text" id="ats-job-title" class="form-control" placeholder="Senior Full-Stack Engineer">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Paste Job Description</label>
+                    <textarea id="ats-job-desc" class="form-control" style="min-height: 120px;" placeholder="Paste the job requirements and responsibilities here to generate keyword match metrics..."></textarea>
+                </div>
+
+                <button type="button" id="run-ats-scan-btn" class="btn-primary" style="width: 100%; justify-content: center; padding: 14px;">
+                    <i class="fas fa-microchip"></i> Run Deep ATS Analysis
+                </button>
+            </div>
+
+            <!-- Dynamic Results Column -->
+            <div id="ats-results-display" class="glass-card" style="padding: 28px; display: none;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 20px;" class="font-heading"><i class="fas fa-chart-line text-gradient" style="margin-right:8px;"></i> Analysis Diagnostic HUD</h3>
+
+                <!-- Score Gauge -->
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div class="progress-ring-container" style="margin: 0 auto 12px auto;">
+                        <svg class="progress-ring-svg" width="120" height="120">
+                            <circle class="progress-ring-circle-bg" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                            <circle class="progress-ring-circle" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                        </svg>
+                        <div id="ats-score-text" class="progress-ring-text text-gradient">85%</div>
+                    </div>
+                    <span class="badge-neon badge-success"><i class="fas fa-check-circle"></i> High Match</span>
+                </div>
+
+                <!-- Matched Keywords -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 8px;"><i class="fas fa-check-double text-gradient-cyan"></i> Matched Keywords</h4>
+                    <div id="matched-keywords-list" style="display: flex; flex-wrap: wrap;"></div>
+                </div>
+
+                <!-- Missing Keywords -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 8px;"><i class="fas fa-exclamation-triangle" style="color:var(--neon-pink);"></i> Missing Keywords to Add</h4>
+                    <div id="missing-keywords-list" style="display: flex; flex-wrap: wrap;"></div>
+                </div>
+
+                <!-- Recommendations -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 8px;"><i class="fas fa-lightbulb" style="color:var(--neon-cyan);"></i> Key Recommendations</h4>
+                    <ul id="recommendations-list" style="list-style: none; font-size: 0.85rem; color: #CBD5E1;"></ul>
+                </div>
+
+                <!-- AI Feedback -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 8px;"><i class="fas fa-robot text-gradient-cyan"></i> Recruiter-Style AI Feedback</h4>
+                    <ul id="ai-feedback-list" style="list-style: none; font-size: 0.85rem; color: #CBD5E1;"></ul>
+                </div>
+
+                <!-- Recruiter Simulator -->
+                <div class="glass-card" style="padding: 16px; background: rgba(37,99,235,0.1); border-color: var(--border-glass-glow);">
+                    <h4 style="font-size: 0.85rem; color: var(--neon-cyan); margin-bottom: 6px;" class="font-heading"><i class="fas fa-user-tie"></i> Recruiter Simulation Evaluation</h4>
+                    <p id="recruiter-notes-box" style="font-size: 0.82rem; color: #CBD5E1; line-height: 1.4;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✨ AI Optimizer Panel (hidden until results exist with missing keywords) -->
+        <div id="ai-optimizer-panel" class="glass-card" style="padding: 28px; display: none; margin-bottom: 32px; border-color: var(--border-glass-glow);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+                <div>
+                    <div class="badge-neon" style="margin-bottom: 8px; background: rgba(139,92,246,0.2); color: #a78bfa;">
+                        <i class="fas fa-wand-magic-sparkles"></i> AI OPTIMIZER
+                    </div>
+                    <h3 class="font-heading" style="font-size: 1.15rem; margin: 0;">Generate Missing Requirements with AI</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 4px;">Ollama (llama3) will generate ATS-friendly bullets &amp; skills you can copy into your resume.</p>
+                </div>
+                <button id="generate-missing-btn" class="btn-primary" style="background: linear-gradient(135deg, #7c3aed, #4f46e5); min-width: 220px; justify-content: center;">
+                    <i class="fas fa-wand-magic-sparkles"></i> ✨ Generate with AI
+                </button>
+            </div>
+
+            <!-- Output Textarea -->
+            <div id="ai-output-wrapper" style="display: none;">
+                <label class="form-label" style="margin-bottom: 8px; color: var(--neon-cyan);">
+                    <i class="fas fa-robot"></i> AI-Generated Resume Additions (editable)
+                </label>
+                <textarea id="ai-generated-output"
+                          class="form-control"
+                          style="min-height: 220px; font-family: 'Courier New', monospace; font-size: 0.88rem; line-height: 1.6; resize: vertical;"
+                          placeholder="AI output will appear here..."></textarea>
+
+                <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+                    <button id="apply-to-builder-btn" class="btn-primary" style="flex: 1; justify-content: center;">
+                        <i class="fas fa-arrow-right"></i> Apply to Resume Builder
+                    </button>
+                    <button id="copy-ai-output-btn" class="btn-glass" style="flex-shrink: 0;">
+                        <i class="fas fa-copy"></i> Copy Text
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+{% endblock %}
+
+
