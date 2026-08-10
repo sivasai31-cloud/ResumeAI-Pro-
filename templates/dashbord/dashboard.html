@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | ResumeAI Pro</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            ResumeAI <span>Pro</span>
+        </div>
+
+        <nav>
+            <a href="/dashboard" class="active">
+                Dashboard
+            </a>
+
+            <a href="/create">
+                Create Resume
+            </a>
+
+            <a href="/upload">
+                ATS Analyzer
+            </a>
+
+            <a href="/ats">
+                ATS Checker
+            </a>
+        </nav>
+
+        <a href="/logout" class="logout">
+            Logout
+        </a>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header>
+
+            <div>
+                <p class="welcome">WELCOME BACK</p>
+
+                <h1>
+                    Hello, {{ user_name }} 👋
+                </h1>
+
+                <p>
+                    Build, analyze and improve your resume.
+                </p>
+            </div>
+
+            <div class="profile">
+                {{ user_name[0] | upper }}
+            </div>
+
+        </header>
+
+
+        <section class="hero-card">
+
+            <div>
+
+                <span>RESUMEAI PRO</span>
+
+                <h2>
+                    Build a resume that gets noticed.
+                </h2>
+
+                <p>
+                    Create an ATS-friendly resume and analyze
+                    your job match score.
+                </p>
+
+                <a href="/create">
+                    Create Resume
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section class="tools">
+
+            <h2>Your AI Resume Tools</h2>
+
+            <div class="tool-grid">
+
+
+                <a href="/create" class="tool-card">
+
+                    <div class="icon">✦</div>
+
+                    <h3>Resume Builder</h3>
+
+                    <p>
+                        Build a clean ATS-friendly resume.
+                    </p>
+
+                    <span>Start Building →</span>
+
+                </a>
+
+
+                <a href="/upload" class="tool-card">
+
+                    <div class="icon">◎</div>
+
+                    <h3>ATS Analyzer</h3>
+
+                    <p>
+                        Upload your resume and detect mistakes.
+                    </p>
+
+                    <span>Analyze Resume →</span>
+
+                </a>
+
+
+                <a href="/upload" class="tool-card">
+
+                    <div class="icon">⌁</div>
+
+                    <h3>Job Match</h3>
+
+                    <p>
+                        Compare your resume with a job description.
+                    </p>
+
+                    <span>Check Match →</span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

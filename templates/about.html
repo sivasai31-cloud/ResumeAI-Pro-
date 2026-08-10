@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>About | ResumeAI Pro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        .about-page {
+            min-height: 100vh;
+
+            padding: 150px 30px 70px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+        .about-card {
+            width: 100%;
+
+            max-width: 900px;
+
+            padding: 60px;
+
+            border-radius: 30px;
+
+            background: rgba(15, 23, 42, 0.7);
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            backdrop-filter: blur(20px);
+        }
+
+        .about-card h1 {
+            font-size: 55px;
+        }
+
+        .about-card h1 span {
+            color: #818cf8;
+        }
+
+        .about-card p {
+            margin-top: 25px;
+
+            color: #aeb9ca;
+
+            font-size: 18px;
+
+            line-height: 1.8;
+        }
+
+        .about-card a {
+            display: inline-block;
+
+            margin-top: 35px;
+
+            padding: 15px 25px;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                90deg,
+                #2563eb,
+                #7c3aed
+            );
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="{{ url_for('home') }}" class="logo">
+        ResumeAI <span>Pro</span>
+    </a>
+
+    <div class="menu">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('create_resume') }}">
+            Create Resume
+        </a>
+
+        <a href="{{ url_for('ats') }}">
+            ATS Checker
+        </a>
+
+        <a href="{{ url_for('about') }}">
+            About
+        </a>
+
+        <a href="{{ url_for('login') }}" class="login-link">
+            Login
+        </a>
+
+    </div>
+
+</nav>
+
+
+<section class="about-page">
+
+    <div class="about-card">
+
+        <h1>
+            About <span>ResumeAI Pro</span>
+        </h1>
+
+        <p>
+            ResumeAI Pro is an intelligent resume platform
+            designed to help students and job seekers build
+            professional ATS-friendly resumes.
+        </p>
+
+        <p>
+            The platform analyzes resume structure, skills,
+            action verbs, measurable achievements and job
+            description matching.
+        </p>
+
+        <p>
+            Our goal is simple: help candidates create cleaner,
+            stronger and more relevant resumes.
+        </p>
+
+        <a href="{{ url_for('create_resume') }}">
+            Build Your Resume
+        </a>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>
