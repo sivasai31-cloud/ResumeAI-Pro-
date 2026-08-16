@@ -1,7 +1,31 @@
+# Python
 venv/
+.venv/
 __pycache__/
 *.pyc
-uploads/
-resumeai.db
+
+# Frontend
+node_modules/
+dist/
+
+# Environment
 .env
+.env.*
+!.env.example
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# User uploads
+uploads/
+
+# IDE
 .vscode/
+
+# Local HTTPS certificates
+certs/
+*.pem
+*.key
+*.crt
